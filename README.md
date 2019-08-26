@@ -14,7 +14,7 @@ TableView是一个安卓课程表UI库，使用本库可以实现基本的课程
 
 ### 效果预览
 
-![ex](images\ex.jpg)
+![ex](images/ex.jpg)
 
 ### 使用方法
 
