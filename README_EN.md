@@ -34,7 +34,7 @@ allprojects {
 ​	在app下的build.gradle添加
 
 ```gradle
-implementation 'com.github.devmeteor:tableview:1.0'
+implementation 'com.github.DevMeteor:TableView:1.0'
 ```
 
 #### 2.属性定义
