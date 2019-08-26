@@ -1,6 +1,6 @@
 # TableView
 
-中文|[English](README_EN.md)
+[中文](README.md)|English
 
 TableView是一个安卓课程表UI库，使用本库可以实现基本的课程显示，并可对课程表UI进行基本的自定义。
 
