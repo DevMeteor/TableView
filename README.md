@@ -1,7 +1,3 @@
----
-typora-copy-images-to: images
----
-
 # TableView
 
 中文|[English](https://www.baidu.com)
