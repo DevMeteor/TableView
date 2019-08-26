@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:overScrollMode="never"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:paddingTop="24dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/item_table_view_indicator_con"
+                android:orientation="vertical"
+                android:layout_width="20dp"
+                android:layout_height="match_parent" />
+
+            <RelativeLayout
+                android:id="@+id/item_table_view_mon"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:paddingStart="1dp"
+                android:paddingEnd="1dp"
+                android:layout_weight="1" />
+
+            <RelativeLayout
+                android:id="@+id/item_table_view_tue"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingStart="1dp"
+                android:paddingEnd="1dp" />
+
+            <RelativeLayout
+                android:id="@+id/item_table_view_wed"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:paddingStart="1dp"
+                android:paddingEnd="1dp"
+                android:layout_weight="1" />
+
+            <RelativeLayout
+                android:id="@+id/item_table_view_thu"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:paddingStart="1dp"
+                android:paddingEnd="1dp"
+                android:layout_weight="1" />
+
+            <RelativeLayout
+                android:id="@+id/item_table_view_fri"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:paddingStart="1dp"
+                android:paddingEnd="1dp"
+                android:layout_weight="1" />
+
+            <RelativeLayout
+                android:id="@+id/item_table_view_sat"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:paddingStart="1dp"
+                android:paddingEnd="1dp"
+                android:layout_weight="1" />
+
+            <RelativeLayout
+                android:id="@+id/item_table_view_sun"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:paddingStart="1dp"
+                android:paddingEnd="1dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/item_table_view_week_con"
+        android:paddingStart="20dp"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="24dp">
+
+        <TextView
+            android:id="@+id/item_table_view_tv_mon"
+            android:text="周一"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/item_table_view_tv_tue"
+            android:text="周二"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/item_table_view_tv_wed"
+            android:text="周三"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/item_table_view_tv_thu"
+            android:text="周四"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/item_table_view_tv_fri"
+            android:text="周五"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/item_table_view_tv_sat"
+            android:text="周六"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/item_table_view_tv_sun"
+            android:text="周日"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</RelativeLayout>

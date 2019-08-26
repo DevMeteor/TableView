@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TableView">
+        <attr name="tv_count_per_day" format="integer"/>
+
+        <attr name="tv_resolve_flags" format="reference"/>
+        <attr name="tv_indicator_bg_color" format="color"/>
+        <attr name="tv_indicator_text_color" format="color"/>
+        <attr name="tv_week_bg_color" format="color"/>
+        <attr name="tv_week_text_color" format="color"/>
+        <attr name="tv_lesson_text_color" format="color"/>
+    </declare-styleable>
+</resources>
