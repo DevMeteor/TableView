@@ -2,25 +2,25 @@
 
 [中文](README.md)|English
 
-TableView是一个安卓课程表UI库，使用本库可以实现基本的课程显示，并可对课程表UI进行基本的自定义。
+TableView is an Android timetable UI library, using this library to achieve the basic course display, and the timetable UI can be basically customized.
 
-### 功能特色
+### Functional features
 
-- 数据源可灵活定义
-- 单日课程总数可自定义
-- 可自动设置课程块背景颜色
-- TableView内各部分颜色可自由设置
-- 使用原生组件编写，无需考虑依赖冲突问题
+- Flexible definition of data sources
+- Total number of single-day courses customizable
+- Automatically set the background color of the course block
+- The colors of each part of the TableView can be set freely
+- Written in native components, regardless of dependency conflicts
 
-### 效果预览
+### Effect preview
 
 ![ex](images/ex.jpg)
 
-### 使用方法
+### Use method
 
-#### 1.添加依赖
+#### 1.Add dependency
 
-​	在工程根目录下的build.gradle添加
+​	Add the following to the build.gradle in the root directory of the project
 
 ```gradle
 allprojects {
@@ -31,37 +31,37 @@ allprojects {
 }
 ```
 
-​	在app下的build.gradle添加
+​	Add the following to the build.gradle under app
 
 ```gradle
 implementation 'com.github.DevMeteor:TableView:1.0'
 ```
 
-#### 2.属性定义
+#### 2.Attribute definition
 
-|          属性           |   格式    | 描述                                                         |
+|        Attribute        |  format   | description                                                  |
 | :---------------------: | :-------: | ------------------------------------------------------------ |
-|    tv_count_per_day     |  integer  | 单日课程总数（必需）                                         |
-|    tv_resolve_flags     | reference | 字符数组，对应周一至周日，用于解析课程，默认为["mon", "tue", "wed", "thur", "fri", "sat", "sun"]，建议自行设置此项。 |
-|  tv_indicator_bg_color  |   color   | 侧边栏背景颜色                                               |
-| tv_indicator_text_color |   color   | 侧边栏文字颜色                                               |
-|    tv_week_bg_color     |   color   | 星期栏背景颜色                                               |
-|   tv_week_text_color    |   color   | 星期栏文字颜色                                               |
-|  tv_lesson_text_color   |   color   | 课程块的文字颜色                                             |
+|    tv_count_per_day     |  integer  | Total number of courses per day (required)                   |
+|    tv_resolve_flags     | reference | An array of strings, corresponding to Monday to Sunday, for parsing Lessons, default to ["mon", "tue", "wed", "thur", "fri", "sat", "sun"]. It is recommended that you set this on your own. |
+|  tv_indicator_bg_color  |   color   | Sidebar background color                                     |
+| tv_indicator_text_color |   color   | Sidebar textcolor                                            |
+|    tv_week_bg_color     |   color   | Week column background color                                 |
+|   tv_week_text_color    |   color   | Week column text color                                       |
+|  tv_lesson_text_color   |   color   | Text color of the course block                               |
 
-​	**注：以上背景颜色默认为透明，文字颜色默认为黑色，如需设置整个课表背景可直接设置android:background="xxx"。**
+​	**Note: the above background color is transparent by default, and the text color defaults to black. If you want to set the entire schedule background, you can directly set android:background= "xxx".**
 
-以下参数可在dimen资源文件并进行覆盖使用
+The following parameters can be overridden in the **dimen** resource file
 
-|         属性         | 描述                                                       |
-| :------------------: | ---------------------------------------------------------- |
-|  height_per_lesson   | 每个课程块的高度，控件的高度实际由本属性和单日课程总数决定 |
-|   lesson_text_size   | 课程块的文字大小                                           |
-| lesson_border_radius | 课程块四个角的弧度                                         |
+|      Attribute       | description                                                  |
+| :------------------: | ------------------------------------------------------------ |
+|  height_per_lesson   | The height of each course block and the height of the component is actually determined by this attribute and the total number of courses per day |
+|   lesson_text_size   | Text size of the course block                                |
+| lesson_border_radius | Radius of the four corners of the course block               |
 
-#### 3.基本使用
+#### 3.Basic use
 
-​	在布局文件中添加
+​	Add the following to the layout file
 
 ```xml
 <cn.devmeteor.tableview.TableView
@@ -75,18 +75,18 @@ implementation 'com.github.DevMeteor:TableView:1.0'
         app:tv_resolve_flags="@array/resolve_flags"/>
 ```
 
-​	使用时需要把bean文件转化成Lesson类或继承自Lesson类，Lesson类的构造函数为
+​	When you use it, you need to convert the bean file to a Lesson class or extends the Lesson class, and the constructor of the Lesson class is
 
 ```java
 /**
      *
-     * @param term 学期
-     * @param week 第几周
-     * @param name 课程名
-     * @param weekday 周几，对应tv_resolve_flags的项
-     * @param start 从第几节课开始
-     * @param end 到第几节课结束
-     * @param place 上课地点
+     * @param term
+     * @param week
+     * @param name Lesson name
+     * @param weekday Items corresponding to tv_resolve_flags
+     * @param start Start from ...
+     * @param end Till...
+     * @param place Place of lesson
      */
 public Lesson(String term, String week, String name, String weekday, int start, int end, String place)
 ```
@@ -96,9 +96,9 @@ public Lesson(String term, String week, String name, String weekday, int start, 
 ```java
 public class CustomLesson extends Lesson {
 
-    private String teacher; //任课教师
-    private String date; //上课日期 xxxx年x月x日
-    private String identifier; //课程编号
+    private String teacher; 
+    private String date; 
+    private String identifier; //Course number
 
     public CustomLesson(String term, String week, String name, String weekday, int start, int end, String place, String teacher, String date, String identifier) {
         super(term, week, name, weekday, start, end, place);
@@ -145,7 +145,7 @@ public class CustomLesson extends Lesson {
         });
     }
 
-//bgMap示例
+//bgMap example
 private Map<String,Integer> getBgMap(){
         Map<String,Integer> bgMap=new HashMap<>();
         bgMap.put("高等数学A2", Color.parseColor("#ccFFFFF0"));
@@ -161,7 +161,7 @@ private Map<String,Integer> getBgMap(){
         return bgMap;
     }
 
-//模拟生成课程数据，自定义课程bean可直接替换
+//Simulated generation of course data, custom course bean can be replaced directly
 private List<Lesson> getLessons(){
         List<Lesson> lessons=new ArrayList<>();
         lessons.add(new Lesson("2018-2019-2", "第1周", "高等数学A2","mon",1,2, "崇师"));
@@ -188,9 +188,9 @@ private List<Lesson> getLessons(){
 ```java
 /**
      * 
-     * @param lessons 课程
-     * @param bgMap 课程块对应颜色，课程名对应颜色值，不设置会使用随机颜色，可保证同名课程同色，但不同名课程块颜色可能相近而无法直观区分，建议自行添加bgMap
-     * @param lessonClickListener 课程块点击事件
+     * @param lessons
+     * @param bgMap The course block corresponds to the color, and the course name corresponds to the color value. If it is not set, the random color will be used to ensure the same color of the course with the same name, but the color of the course block with the same name may be similar and cannot be distinguished intuitively. It is recommended to add bgMap by yourself.
+     * @param lessonClickListener Course block click event
      */
 public void setLessons(List<? extends Lesson> lessons)
 public void setLessons(List<? extends Lesson> lessons, Map<String, Integer> bgMap)
