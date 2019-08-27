@@ -91,7 +91,7 @@ The following parameters can be overridden in the **dimen** resource file
 public Lesson(String term, String week, String name, String weekday, int start, int end, String place)
 ```
 
-​	若需要可使bean文件继承Lesson类，示例：
+​	If need, you can make the bean file extends Lesson class, for example:
 
 ```java
 public class CustomLesson extends Lesson {
@@ -127,7 +127,7 @@ public class CustomLesson extends Lesson {
 }
 ```
 
-​	在Activity中使用
+​	Use in Activity
 
 ```java
 @Override
