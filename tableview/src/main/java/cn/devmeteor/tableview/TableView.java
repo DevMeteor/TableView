@@ -18,7 +18,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class TableView extends LinearLayout {
+/**
+ * @author Meteor
+ */
+public class TableView<T extends Lesson> extends LinearLayout {
 
     private RelativeLayout mon;
     private RelativeLayout tue;
@@ -46,12 +49,13 @@ public class TableView extends LinearLayout {
     }
 
     private void init(Context context, AttributeSet attrs) {
-        if (attrs == null) return;
+        if (attrs == null){ return;}
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.TableView);
         countPerDay = typedArray.getInteger(R.styleable.TableView_tv_count_per_day, 0);
         int arrId = typedArray.getResourceId(R.styleable.TableView_tv_resolve_flags, 0);
-        if (arrId != 0)
+        if (arrId != 0) {
             flags = context.getResources().getStringArray(arrId);
+        }
         int indicatorBgColor = typedArray.getColor(R.styleable.TableView_tv_indicator_bg_color, Color.TRANSPARENT);
         int indicatorTextColor = typedArray.getColor(R.styleable.TableView_tv_indicator_text_color, Color.BLACK);
         int weekBgColor = typedArray.getColor(R.styleable.TableView_tv_week_bg_color, Color.TRANSPARENT);
@@ -98,22 +102,23 @@ public class TableView extends LinearLayout {
         }
     }
 
-    public void setLessons(List<? extends Lesson> lessons) {
+    public void setLessons(List<T> lessons) {
         setLessons(lessons, null, null);
     }
 
-    public void setLessons(List<? extends Lesson> lessons, Map<String, Integer> bgMap) {
+    public void setLessons(List<T> lessons, Map<String, Integer> bgMap) {
         setLessons(lessons, bgMap, null);
     }
 
-    public void setLessons(List<? extends Lesson> lessons, LessonView.LessonClickListener lessonClickListener) {
+    public void setLessons(List<T> lessons, LessonView.LessonClickListener<T> lessonClickListener) {
         setLessons(lessons, null, lessonClickListener);
     }
 
-    public void setLessons(List<? extends Lesson> lessons, Map<String, Integer> bgMap, LessonView.LessonClickListener lessonClickListener) {
+    public void setLessons(List<T> lessons, Map<String, Integer> bgMap, LessonView.LessonClickListener<T> lessonClickListener) {
         Map<String, Integer> mBgMap = new HashMap<>();
-        if (bgMap != null)
+        if (bgMap != null) {
             mBgMap.putAll(bgMap);
+        }
         mon.removeAllViews();
         tue.removeAllViews();
         wed.removeAllViews();
@@ -121,35 +126,43 @@ public class TableView extends LinearLayout {
         fri.removeAllViews();
         sat.removeAllViews();
         sun.removeAllViews();
-        if (flags == null)
+        if (flags == null) {
             flags = new String[]{"mon", "tue", "wed", "thur", "fri", "sat", "sun"};
+        }
         for (int i = 0; i < countPerDay; i++) {
-            for (Lesson lesson : lessons) {
+            for (T lesson : lessons) {
                 if (lesson.getStart() == i) {
-                    LessonView lessonView = new LessonView(getContext());
+                    LessonView<T> lessonView = new LessonView<>(getContext());
                     lessonView.setTextColor(lessonTextColor);
                     lessonView.setLesson(lesson, lessonClickListener);
-                    if (mBgMap.get(lesson.getName()) != null)
+                    if (mBgMap.get(lesson.getName()) != null) {
                         lessonView.setBgColor(mBgMap.get(lesson.getName()));
-                    else {
+                    }else {
                         int randomColor = createRandomColor();
                         mBgMap.put(lesson.getName(), randomColor);
                         lessonView.setBgColor(randomColor);
                     }
-                    if (lesson.getWeekday().equals(flags[0]))
+                    if (lesson.getWeekday().equals(flags[0])) {
                         mon.addView(lessonView);
-                    if (lesson.getWeekday().equals(flags[1]))
+                    }
+                    if (lesson.getWeekday().equals(flags[1])) {
                         tue.addView(lessonView);
-                    if (lesson.getWeekday().equals(flags[2]))
+                    }
+                    if (lesson.getWeekday().equals(flags[2])) {
                         wed.addView(lessonView);
-                    if (lesson.getWeekday().equals(flags[3]))
+                    }
+                    if (lesson.getWeekday().equals(flags[3])) {
                         thu.addView(lessonView);
-                    if (lesson.getWeekday().equals(flags[4]))
+                    }
+                    if (lesson.getWeekday().equals(flags[4])) {
                         fri.addView(lessonView);
-                    if (lesson.getWeekday().equals(flags[5]))
+                    }
+                    if (lesson.getWeekday().equals(flags[5])) {
                         sat.addView(lessonView);
-                    if (lesson.getWeekday().equals(flags[6]))
+                    }
+                    if (lesson.getWeekday().equals(flags[6])) {
                         sun.addView(lessonView);
+                    }
                 }
             }
         }
@@ -164,8 +177,9 @@ public class TableView extends LinearLayout {
         r = random.nextInt(256);
         g = random.nextInt(256);
         b = random.nextInt(256);
-        if (r * 0.299 + g * 0.578 + b * 0.114 < 115)
+        if (r * 0.299 + g * 0.578 + b * 0.114 < 115) {
             return createRandomColor();
+        }
         R = Integer.toHexString(r).toUpperCase();
         G = Integer.toHexString(g).toUpperCase();
         B = Integer.toHexString(b).toUpperCase();
@@ -173,9 +187,11 @@ public class TableView extends LinearLayout {
         G = G.length() == 1 ? "0" + G : G;
         B = B.length() == 1 ? "0" + B : B;
         String color = "#CC" + R + G + B;
-        for (String s : randomColors)
-            if (s.equals(color))
+        for (String s : randomColors) {
+            if (s.equals(color)) {
                 return createRandomColor();
+            }
+        }
         randomColors.add(color);
         return Color.parseColor(color);
     }

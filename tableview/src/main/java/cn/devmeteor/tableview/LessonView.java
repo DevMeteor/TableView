@@ -1,5 +1,6 @@
 package cn.devmeteor.tableview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
@@ -10,7 +11,10 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class LessonView extends FrameLayout {
+/**
+ * @author Meteor
+ */
+public class LessonView<T extends Lesson> extends FrameLayout {
 
     private LinearLayout content;
     private TextView name;
@@ -29,8 +33,12 @@ public class LessonView extends FrameLayout {
         init(context);
     }
 
-    public interface LessonClickListener {
-        void onClick(Lesson lesson);
+    public interface LessonClickListener<T extends Lesson> {
+        /**
+         * 课程块点击事件
+         * @param lesson 被点击的课程数据
+         */
+        void onClick(T lesson);
     }
 
     private void init(Context context) {
@@ -41,12 +49,14 @@ public class LessonView extends FrameLayout {
         place = view.findViewById(R.id.item_lesson_place);
     }
 
-    public void setLesson(final Lesson lesson, final LessonClickListener lessonClickListener) {
+    @SuppressLint("SetTextI18n")
+    public void setLesson(final T lesson, final LessonClickListener<T> lessonClickListener) {
         content.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (lessonClickListener != null)
+                if (lessonClickListener != null) {
                     lessonClickListener.onClick(lesson);
+                }
             }
         });
         name.setText(lesson.getName());

@@ -15,26 +15,29 @@ import cn.devmeteor.tableview.LessonView;
 import cn.devmeteor.tableview.TableView;
 
 
+/**
+ * @author Meteor
+ */
 public class MainActivity extends AppCompatActivity {
 
-    private TableView tableView;
+    private TableView<CustomLesson> tableView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tableView=findViewById(R.id.main_table);
-        tableView.setLessons(getCustomLessons(), new LessonView.LessonClickListener() {
+        tableView.setLessons(getCustomLessons(),getBgMap(), new LessonView.LessonClickListener<CustomLesson>() {
             @Override
-            public void onClick(Lesson lesson) {
+            public void onClick(CustomLesson lesson) {
                 Toast.makeText(MainActivity.this,lesson.toString(),Toast.LENGTH_LONG).show();
             }
         });
     }
 
     private Map<String,Integer> getBgMap(){
-        Map<String,Integer> bgMap=new HashMap<>();
-        bgMap.put("高等数学A2", Color.parseColor("#ccFFFFF0"));
+        Map<String,Integer> bgMap=new HashMap<>(10);
+        bgMap.put("高等数学A2", Color.parseColor("#CC459AFE"));
         bgMap.put("体育", Color.parseColor("#CC4CAF50"));
         bgMap.put("计算机基础及应用2", Color.parseColor("#CC4FAFA7"));
         bgMap.put("英国小说家与原著", Color.parseColor("#CCA8AF4C"));

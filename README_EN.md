@@ -34,7 +34,7 @@ allprojects {
 ​	Add the following to the build.gradle under app
 
 ```gradle
-implementation 'com.github.DevMeteor:TableView:1.0'
+implementation 'com.github.DevMeteor:TableView:1.1'
 ```
 
 #### 2.Attribute definition
@@ -130,17 +130,18 @@ public class CustomLesson extends Lesson {
 ​	Use in Activity
 
 ```java
-@Override
+	private TableView<CustomLesson> tableView;
+
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ...
         tableView=findViewById(R.id.main_table);
-        //
-        tableView.setLessons(getLessons(),getBgMap(), new LessonView.LessonClickListener() {
+        tableView.setLessons(getCustomLessons(), new LessonView.LessonClickListener<CustomLesson>() {
             @Override
-            public void onClick(Lesson lesson) {
-            	Toast.makeText(MainActivity.this,lesson.toString(),Toast.LENGTH_LONG).show();
+            public void onClick(CustomLesson lesson) {
+                Toast.makeText(MainActivity.this,lesson.toString(),Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -186,14 +187,18 @@ private List<Lesson> getLessons(){
 #### 4.setLessons()
 
 ```java
-/**
+public class TableView<T extends Lesson>
+	/**
      * 
      * @param lessons
      * @param bgMap The course block corresponds to the color, and the course name corresponds to the color value. If it is not set, the random color will be used to ensure the same color of the course with the same name, but the color of the course block with the same name may be similar and cannot be distinguished intuitively. It is recommended to add bgMap by yourself.
      * @param lessonClickListener Course block click event
      */
-public void setLessons(List<? extends Lesson> lessons)
-public void setLessons(List<? extends Lesson> lessons, Map<String, Integer> bgMap)
-public void setLessons(List<? extends Lesson> lessons, LessonView.LessonClickListener lessonClickListener)
-public void setLessons(List<? extends Lesson> lessons, Map<String, Integer> bgMap, LessonView.LessonClickListener lessonClickListener)
+    public void setLessons(List<T> lessons)
+    
+    public void setLessons(List<T> lessons, Map<String, Integer> bgMap)
+    
+    public void setLessons(List<T> lessons, LessonView.LessonClickListener<T> lessonClickListener)
+    
+    public void setLessons(List<T> lessons, Map<String, Integer> bgMap, LessonView.LessonClickListener<T> lessonClickListener)
 ```

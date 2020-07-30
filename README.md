@@ -34,7 +34,7 @@ allprojects {
 ​	在app下的build.gradle添加
 
 ```gradle
-implementation 'com.github.DevMeteor:TableView:1.0'
+implementation 'com.github.DevMeteor:TableView:1.1'
 ```
 
 #### 2.属性定义
@@ -130,17 +130,18 @@ public class CustomLesson extends Lesson {
 ​	在Activity中使用
 
 ```java
-@Override
+	private TableView<CustomLesson> tableView;
+
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ...
         tableView=findViewById(R.id.main_table);
-        //
-        tableView.setLessons(getLessons(),getBgMap(), new LessonView.LessonClickListener() {
+        tableView.setLessons(getCustomLessons(), new LessonView.LessonClickListener<CustomLesson>() {
             @Override
-            public void onClick(Lesson lesson) {
-            	Toast.makeText(MainActivity.this,lesson.toString(),Toast.LENGTH_LONG).show();
+            public void onClick(CustomLesson lesson) {
+                Toast.makeText(MainActivity.this,lesson.toString(),Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -186,14 +187,19 @@ private List<Lesson> getLessons(){
 #### 4.setLessons()
 
 ```java
-/**
+public class TableView<T extends Lesson>
+	/**
      * 
      * @param lessons 课程
      * @param bgMap 课程块对应颜色，课程名对应颜色值，不设置会使用随机颜色，可保证同名课程同色，但不同名课程块颜色可能相近而无法直观区分，建议自行添加bgMap
      * @param lessonClickListener 课程块点击事件
      */
-public void setLessons(List<? extends Lesson> lessons)
-public void setLessons(List<? extends Lesson> lessons, Map<String, Integer> bgMap)
-public void setLessons(List<? extends Lesson> lessons, LessonView.LessonClickListener lessonClickListener)
-public void setLessons(List<? extends Lesson> lessons, Map<String, Integer> bgMap, LessonView.LessonClickListener lessonClickListener)
+    public void setLessons(List<T> lessons)
+    
+    public void setLessons(List<T> lessons, Map<String, Integer> bgMap)
+    
+    public void setLessons(List<T> lessons, LessonView.LessonClickListener<T> lessonClickListener)
+    
+    public void setLessons(List<T> lessons, Map<String, Integer> bgMap, LessonView.LessonClickListener<T> lessonClickListener)
 ```
+
