@@ -3,7 +3,11 @@ package cn.devmeteor.tableview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.AbsoluteSizeSpan;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +16,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
@@ -30,6 +37,14 @@ public class TableView<T extends Lesson> extends LinearLayout {
     private RelativeLayout fri;
     private RelativeLayout sat;
     private RelativeLayout sun;
+    private TextView tvMon;
+    private TextView tvTue;
+    private TextView tvWed;
+    private TextView tvThu;
+    private TextView tvFri;
+    private TextView tvSat;
+    private TextView tvSun;
+    private LinearLayout indicatorCon;
 
     private int countPerDay;
     private int lessonTextColor;
@@ -49,7 +64,9 @@ public class TableView<T extends Lesson> extends LinearLayout {
     }
 
     private void init(Context context, AttributeSet attrs) {
-        if (attrs == null){ return;}
+        if (attrs == null) {
+            return;
+        }
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.TableView);
         countPerDay = typedArray.getInteger(R.styleable.TableView_tv_count_per_day, 0);
         int arrId = typedArray.getResourceId(R.styleable.TableView_tv_resolve_flags, 0);
@@ -72,13 +89,13 @@ public class TableView<T extends Lesson> extends LinearLayout {
         fri = view.findViewById(R.id.item_table_view_fri);
         sat = view.findViewById(R.id.item_table_view_sat);
         sun = view.findViewById(R.id.item_table_view_sun);
-        TextView tvMon = view.findViewById(R.id.item_table_view_tv_mon);
-        TextView tvTue = view.findViewById(R.id.item_table_view_tv_tue);
-        TextView tvWed = view.findViewById(R.id.item_table_view_tv_wed);
-        TextView tvThu = view.findViewById(R.id.item_table_view_tv_thu);
-        TextView tvFri = view.findViewById(R.id.item_table_view_tv_fri);
-        TextView tvSat = view.findViewById(R.id.item_table_view_tv_sat);
-        TextView tvSun = view.findViewById(R.id.item_table_view_tv_sun);
+        tvMon = view.findViewById(R.id.item_table_view_tv_mon);
+        tvTue = view.findViewById(R.id.item_table_view_tv_tue);
+        tvWed = view.findViewById(R.id.item_table_view_tv_wed);
+        tvThu = view.findViewById(R.id.item_table_view_tv_thu);
+        tvFri = view.findViewById(R.id.item_table_view_tv_fri);
+        tvSat = view.findViewById(R.id.item_table_view_tv_sat);
+        tvSun = view.findViewById(R.id.item_table_view_tv_sun);
         tvMon.setTextColor(weekTextColor);
         tvTue.setTextColor(weekTextColor);
         tvWed.setTextColor(weekTextColor);
@@ -88,17 +105,66 @@ public class TableView<T extends Lesson> extends LinearLayout {
         tvSun.setTextColor(weekTextColor);
         LinearLayout weekCon = view.findViewById(R.id.item_table_view_week_con);
         weekCon.setBackgroundColor(weekBgColor);
-        LinearLayout indicatorCon = view.findViewById(R.id.item_table_view_indicator_con);
+        indicatorCon = view.findViewById(R.id.item_table_view_indicator_con);
         indicatorCon.setBackgroundColor(indicatorBgColor);
         for (int i = 1; i <= countPerDay; i++) {
+            LinearLayout partIndicator = new LinearLayout(context);
+            partIndicator.setOrientation(VERTICAL);
+            partIndicator.setGravity(Gravity.CENTER);
+            partIndicator.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+                    (int) context.getResources().getDimension(R.dimen.height_per_lesson)));
             TextView textView = new TextView(context);
             textView.setText(String.valueOf(i));
-            textView.setTextColor(indicatorTextColor);
             textView.setGravity(Gravity.CENTER);
+            textView.setTextColor(indicatorTextColor);
             textView.getPaint().setFakeBoldText(true);
-            LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, (int) context.getResources().getDimension(R.dimen.height_per_lesson));
-            textView.setLayoutParams(layoutParams);
-            indicatorCon.addView(textView);
+            partIndicator.addView(textView);
+            TextView start = new TextView(context);
+            start.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
+            start.setGravity(Gravity.CENTER);
+            TextView end = new TextView(context);
+            end.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
+            end.setGravity(Gravity.CENTER);
+            partIndicator.addView(start);
+            partIndicator.addView(end);
+            indicatorCon.addView(partIndicator);
+        }
+    }
+
+    public void setTimes(String[] starts, String[] ends) {
+        if (starts.length != ends.length)
+            throw new RuntimeException("开始时间与结束时间不对应");
+        int count = Math.min(countPerDay, starts.length);
+        for (int i = 0; i < count; i++) {
+            LinearLayout indicator = (LinearLayout) indicatorCon.getChildAt(i);
+            ((TextView) indicator.getChildAt(1)).setText(starts[i]);
+            ((TextView) indicator.getChildAt(2)).setText(ends[i]);
+        }
+    }
+
+    public void setWeekStart(Date date) {
+        TextView month = findViewById(R.id.item_table_view_tv_month);
+        month.setText(new SimpleDateFormat("M\n月", Locale.CHINA).format(date));
+        getDateString(date, tvMon, 0);
+        getDateString(date, tvTue, 1);
+        getDateString(date, tvWed, 2);
+        getDateString(date, tvThu, 3);
+        getDateString(date, tvFri, 4);
+        getDateString(date, tvSat, 5);
+        getDateString(date, tvSun, 6);
+    }
+
+    private void getDateString(Date date, TextView tv, int offset) {
+        Date d = new Date(date.getTime() + offset * 24 * 60 * 60 * 1000);
+        String str = new SimpleDateFormat("E\nMM/dd", Locale.CHINA).format(d);
+        SpannableString res = new SpannableString(str);
+        res.setSpan(new AbsoluteSizeSpan(10, true), str.length() - 5, str.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+        tv.setText(res);
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd",Locale.CHINA);
+        if (format.format(new Date()).equals(format.format(d))){
+            tv.setBackgroundColor(Color.parseColor("#66ababab"));
+        }else{
+            tv.setBackgroundColor(Color.TRANSPARENT);
         }
     }
 
@@ -137,7 +203,7 @@ public class TableView<T extends Lesson> extends LinearLayout {
                     lessonView.setLesson(lesson, lessonClickListener);
                     if (mBgMap.get(lesson.getName()) != null) {
                         lessonView.setBgColor(mBgMap.get(lesson.getName()));
-                    }else {
+                    } else {
                         int randomColor = createRandomColor();
                         mBgMap.put(lesson.getName(), randomColor);
                         lessonView.setBgColor(randomColor);
@@ -166,6 +232,10 @@ public class TableView<T extends Lesson> extends LinearLayout {
                 }
             }
         }
+    }
+
+    public void setResolveFlags(String[] flags) {
+        this.flags = flags;
     }
 
     private List<String> randomColors = new ArrayList<>();

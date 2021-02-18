@@ -1,7 +1,5 @@
 # TableView
 
-中文|[English](README_EN.md)
-
 TableView是一个安卓课程表UI库，使用本库可以实现基本的课程显示，并可对课程表UI进行基本的自定义。
 
 ### 功能特色
@@ -34,7 +32,7 @@ allprojects {
 ​	在app下的build.gradle添加
 
 ```gradle
-implementation 'com.github.DevMeteor:TableView:1.1'
+implementation 'com.github.DevMeteor:TableView:1.2'
 ```
 
 #### 2.属性定义
@@ -88,25 +86,35 @@ implementation 'com.github.DevMeteor:TableView:1.1'
      * @param end 到第几节课结束
      * @param place 上课地点
      */
-public Lesson(String term, String week, String name, String weekday, int start, int end, String place)
+public Lesson(String term, String name, String weekday, int start, int end, String place)
 ```
 
 ​	若需要可使bean文件继承Lesson类，示例：
 
 ```java
+package cn.devmeteor.timetableview;
+
+import cn.devmeteor.tableview.Lesson;
+
 public class CustomLesson extends Lesson {
 
-    private String teacher; //任课教师
-    private String date; //上课日期 xxxx年x月x日
-    private String identifier; //课程编号
+    private String week;
+    private String teacher;
+    private String date;
+    private String identifier;
 
     public CustomLesson(String term, String week, String name, String weekday, int start, int end, String place, String teacher, String date, String identifier) {
-        super(term, week, name, weekday, start, end, place);
+        super(term, name, weekday, start, end, place);
         this.teacher = teacher;
         this.date = date;
+        this.week = week;
         this.identifier = identifier;
     }
 
+
+    public String getWeek() {
+        return week;
+    }
 
     public String getTeacher() {
         return teacher;
@@ -130,18 +138,49 @@ public class CustomLesson extends Lesson {
 ​	在Activity中使用
 
 ```java
-	private TableView<CustomLesson> tableView;
+private TableView<CustomLesson> tableView;
 
-	@Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ...
-        tableView=findViewById(R.id.main_table);
-        tableView.setLessons(getCustomLessons(), new LessonView.LessonClickListener<CustomLesson>() {
+        tableView = findViewById(R.id.main_table);
+        tableView.setTimes(new String[]{
+                "8:10",
+                "9:05",
+                "10:10",
+                "11:05",
+                "13:15",
+                "14:10",
+                "15:05",
+                "16:00",
+                "16:55",
+                "17:50",
+                "18:45",
+                "19:40"
+        }, new String[]{
+                "8:55",
+                "9:50",
+                "10:55",
+                "11:50",
+                "14:00",
+                "14:55",
+                "15:50",
+                "16:45",
+                "17:40",
+                "18:35",
+                "19:30",
+                "20:25"
+        });
+        try {
+            tableView.setWeekStart(new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse("2021-02-15"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        tableView.setLessons(getCustomLessons(), getBgMap(), new LessonView.LessonClickListener<CustomLesson>() {
             @Override
             public void onClick(CustomLesson lesson) {
-                Toast.makeText(MainActivity.this,lesson.toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, lesson.toString(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -163,33 +202,64 @@ private Map<String,Integer> getBgMap(){
     }
 
 //模拟生成课程数据，自定义课程bean可直接替换
-private List<Lesson> getLessons(){
-        List<Lesson> lessons=new ArrayList<>();
-        lessons.add(new Lesson("2018-2019-2", "第1周", "高等数学A2","mon",1,2, "崇师"));
-        lessons.add(new Lesson("2018-2019-2", "第1周", "体育","mon",3,4, "足球场"));
-        lessons.add(new Lesson("2018-2019-2", "第1周", "计算机基础及应用2","mon",5,6, "行知"));
-        lessons.add(new Lesson("2018-2019-2", "第1周", "英国小说家与原著","mon",9,10, "崇师"));
-        lessons.add(new Lesson("2018-2019-2", "第1周", "大学外语","tue",1,2, "理二"));
-        lessons.add(new Lesson("2018-2019-2", "第1周", "大学物理","tue",3,4, "理二"));
-        lessons.add(new Lesson("2018-2019-2", "第1周", "大学物理实验","tue",5,10, "理二"));
-        lessons.add(new Lesson("2018-2019-2", "第1周", "高等数学A2","wed",1,2, "理二"));
-        lessons.add(new Lesson("2018-2019-2", "第1周", "电路分析基础","wed",3,4, "理二"));
-        lessons.add(new Lesson("2018-2019-2", "第1周", "思想道德修养与法律基础","thu",1,2, "崇师"));
-        lessons.add(new Lesson("2018-2019-2", "第1周", "大学物理","thu",5,6, "理二"));
-        lessons.add(new Lesson("2018-2019-2", "第1周", "电路分析基础","fri",1,2, "理二"));
-        lessons.add(new Lesson("2018-2019-2", "第1周", "大学外语","fri",3,4, "理二"));
-        lessons.add(new Lesson("2018-2019-2", "第1周", "电路分析实验","fri",5,6, "理二"));
+private List<Lesson> getLessons() {
+        List<Lesson> lessons = new ArrayList<>();
+        lessons.add(new Lesson("2018-2019-2", "高等数学A2", "mon", 1, 2, "崇师"));
+        lessons.add(new Lesson("2018-2019-2", "体育", "mon", 3, 4, "足球场"));
+        lessons.add(new Lesson("2018-2019-2", "计算机基础及应用2", "mon", 5, 6, "行知"));
+        lessons.add(new Lesson("2018-2019-2", "英国小说家与原著", "mon", 9, 10, "崇师"));
+        lessons.add(new Lesson("2018-2019-2", "大学外语", "tue", 1, 2, "理二"));
+        lessons.add(new Lesson("2018-2019-2", "大学物理", "tue", 3, 4, "理二"));
+        lessons.add(new Lesson("2018-2019-2", "大学物理实验", "tue", 5, 10, "理二"));
+        lessons.add(new Lesson("2018-2019-2", "高等数学A2", "wed", 1, 2, "理二"));
+        lessons.add(new Lesson("2018-2019-2", "电路分析基础", "wed", 3, 4, "理二"));
+        lessons.add(new Lesson("2018-2019-2", "思想道德修养与法律基础", "thu", 1, 2, "崇师"));
+        lessons.add(new Lesson("2018-2019-2", "大学物理", "thu", 5, 6, "理二"));
+        lessons.add(new Lesson("2018-2019-2", "电路分析基础", "fri", 1, 2, "理二"));
+        lessons.add(new Lesson("2018-2019-2", "大学外语", "fri", 3, 4, "理二"));
+        lessons.add(new Lesson("2018-2019-2", "电路分析实验", "fri", 5, 6, "理二"));
         return lessons;
     }
 
 ```
 
-#### 4.setLessons()
+#### 4.setTimes()
 
 ```java
-public class TableView<T extends Lesson>
 	/**
-     * 
+     * 设置左边栏中的开始结束时间
+     * @param starts 课程开始时间
+     * @param ends 课程结束时间
+     * starts和ends长度必须相同
+     */
+public void setTimes(String[] starts, String[] ends)
+```
+
+#### 5.setWeekStart
+
+```java
+	/**
+     * 设置顶部栏显示月份和日期
+     * @param date 本周一的日期
+     */
+public void setWeekStart(Date date)
+```
+
+#### 6.setResolveFlags
+
+```java
+	/**
+     * 设置解析字符数组，下一次调用setLessons方法后生效
+     * @param flags 解析字符数组
+     */
+public void setResolveFlags(String[] flags)
+```
+
+#### 7.setLessons()
+
+```java
+	/**
+     * 更新课程数据
      * @param lessons 课程
      * @param bgMap 课程块对应颜色，课程名对应颜色值，不设置会使用随机颜色，可保证同名课程同色，但不同名课程块颜色可能相近而无法直观区分，建议自行添加bgMap
      * @param lessonClickListener 课程块点击事件

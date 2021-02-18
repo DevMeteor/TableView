@@ -11,10 +11,11 @@
         android:id="@+id/main_table"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tv_count_per_day="10"
         android:background="#1F8F8F8F"
+        app:tv_count_per_day="14"
+        app:tv_resolve_flags="@array/resolve_flags"
         app:tv_indicator_bg_color="#4DFFFFFF"
-        app:tv_week_bg_color="#4DFFFFFF"/>
+        app:tv_week_bg_color="#4DFFFFFF" />
 
 
 </LinearLayout>

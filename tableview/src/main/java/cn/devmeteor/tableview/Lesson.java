@@ -3,7 +3,6 @@ package cn.devmeteor.tableview;
 public class Lesson {
 
     private String term;
-    private String week;
     private String name;
     private String weekday;
     private int start;
@@ -14,9 +13,6 @@ public class Lesson {
         return term;
     }
 
-    public String getWeek() {
-        return week;
-    }
 
     public String getName() {
         return name;
@@ -39,9 +35,8 @@ public class Lesson {
     }
 
 
-    public Lesson(String term, String week, String name, String weekday, int start, int end, String place) {
+    public Lesson(String term, String name, String weekday, int start, int end, String place) {
         this.term = term;
-        this.week = week;
         this.name = name;
         this.weekday = weekday;
         this.start = start;
@@ -51,6 +46,6 @@ public class Lesson {
 
     @Override
     public String toString() {
-        return term+week+name+place;
+        return term+name+place;
     }
 }
